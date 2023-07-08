@@ -1,6 +1,6 @@
 import React from 'react';
 import {photoHorizontalScreenStyles} from './PhotoHorizontalScreen.styles';
-import {ActivityIndicator, FlatList, RefreshControl, View} from 'react-native';
+import {FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHorizontalPhotosActon} from '../../redux/actions/horizontalPhotoList.action';
 import {ReduxRootState} from '../../redux/store/types/ReduxRootState';
