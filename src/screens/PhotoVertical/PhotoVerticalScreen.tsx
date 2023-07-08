@@ -1,6 +1,6 @@
 import React from 'react';
 import {photoVerticalScreenStyles} from './PhotoVerticalScreen.styles';
-import {FlatList, View} from 'react-native';
+import {FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerticalPhotosActon} from '../../redux/actions/verticalPhotoList.action';
 import {ReduxRootState} from '../../redux/store/types/ReduxRootState';
@@ -26,15 +26,15 @@ export const PhotoVerticalScreen = () => {
     });
   };
 
-  const fetchPhotoList = () => {
+  const fetchPhotoList = (refresh?: boolean) => {
     if (verticalPhotoList.isLoading) {
       return;
     }
 
     dispatch(
       getVerticalPhotosActon({
-        _start: verticalPhotoList.list.length,
-        _limit: verticalPhotoList._limit,
+        _start: refresh ? 0 : verticalPhotoList.list.length,
+        _limit: refresh ? 20 : verticalPhotoList._limit,
       }),
     );
   };
@@ -57,7 +57,15 @@ export const PhotoVerticalScreen = () => {
         renderItem={renderItem}
         data={verticalPhotoList.list}
         keyExtractor={(item: Photo, index: number) => `${item.id}_${index}`}
-        onEndReached={fetchPhotoList}
+        onEndReached={() => fetchPhotoList()}
+        refreshing={verticalPhotoList.isLoading}
+        refreshControl={
+          <RefreshControl
+            progressViewOffset={47}
+            refreshing={verticalPhotoList.isLoading}
+            onRefresh={() => fetchPhotoList(true)}
+          />
+        }
       />
     </View>
   );
