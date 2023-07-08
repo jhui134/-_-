@@ -1,6 +1,6 @@
 import React from 'react';
 import {photoHorizontalScreenStyles} from './PhotoHorizontalScreen.styles';
-import {FlatList, RefreshControl, View} from 'react-native';
+import {ActivityIndicator, FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHorizontalPhotosActon} from '../../redux/actions/horizontalPhotoList.action';
 import {ReduxRootState} from '../../redux/store/types/ReduxRootState';
@@ -11,6 +11,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Button} from '../../components/button/Button';
 import {RouteNameTypes, RouteParamsProps} from '../types';
 import {HorizontalPhotoCard} from '../../components/card/HorizontalPhotoCard';
+import {OverlaySpinner} from '../../components/spinner/OverlaySpinner';
 
 export const PhotoHorizontalScreen = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,10 @@ export const PhotoHorizontalScreen = () => {
       </Button>
     );
   };
+
+  if (!horizontalPhotoList.list.length && horizontalPhotoList.isLoading) {
+    return <OverlaySpinner />;
+  }
 
   return (
     <View style={photoHorizontalScreenStyles.wrap}>
