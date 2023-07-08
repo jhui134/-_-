@@ -11,6 +11,7 @@ import {Button} from '../../components/button/Button';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteNameTypes, RouteParamsProps} from '../types';
 import {useNavigation} from '@react-navigation/native';
+import {OverlaySpinner} from '../../components/spinner/OverlaySpinner';
 
 export const PhotoVerticalScreen = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,10 @@ export const PhotoVerticalScreen = () => {
       </Button>
     );
   };
+
+  if (!verticalPhotoList.list.length && verticalPhotoList.isLoading) {
+    return <OverlaySpinner />;
+  }
 
   return (
     <View style={photoVerticalScreenStyles.wrap}>
