@@ -5,6 +5,12 @@ import {GET_VERTICAL_PHOTO_LIST} from './types';
 export function getVerticalPhotosActon({_limit, _start}: GetPhotosParams) {
   return {
     type: GET_VERTICAL_PHOTO_LIST,
-    payload: getPhotos({_limit, _start}),
+    payload: async () => {
+      const resp = await getPhotos({_limit, _start});
+      return {
+        data: resp,
+        _start,
+      };
+    },
   };
 }

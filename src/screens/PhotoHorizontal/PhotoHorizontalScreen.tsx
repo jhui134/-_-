@@ -1,6 +1,6 @@
 import React from 'react';
 import {photoHorizontalScreenStyles} from './PhotoHorizontalScreen.styles';
-import {FlatList, View} from 'react-native';
+import {FlatList, RefreshControl, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHorizontalPhotosActon} from '../../redux/actions/horizontalPhotoList.action';
 import {ReduxRootState} from '../../redux/store/types/ReduxRootState';
@@ -26,15 +26,15 @@ export const PhotoHorizontalScreen = () => {
     });
   };
 
-  const fetchPhotoList = () => {
+  const fetchPhotoList = (refresh?: boolean) => {
     if (horizontalPhotoList.isLoading) {
       return;
     }
 
     dispatch(
       getHorizontalPhotosActon({
-        _start: horizontalPhotoList.list.length,
-        _limit: horizontalPhotoList._limit,
+        _start: refresh ? 0 : horizontalPhotoList.list.length,
+        _limit: refresh ? 20 : horizontalPhotoList._limit,
       }),
     );
   };
@@ -58,12 +58,20 @@ export const PhotoHorizontalScreen = () => {
         renderItem={renderItem}
         data={horizontalPhotoList.list}
         keyExtractor={(item: Photo, index: number) => `${item.id}_${index}`}
-        onEndReached={fetchPhotoList}
+        onEndReached={() => fetchPhotoList()}
         decelerationRate="fast"
         snapToAlignment="start"
         pagingEnabled
         automaticallyAdjustContentInsets={false}
         showsHorizontalScrollIndicator={false}
+        refreshing={horizontalPhotoList.isLoading}
+        refreshControl={
+          <RefreshControl
+            progressViewOffset={47}
+            refreshing={horizontalPhotoList.isLoading}
+            onRefresh={() => fetchPhotoList(true)}
+          />
+        }
       />
     </View>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View} from 'react-native';
 import {PhotoHorizontalScreen} from './PhotoHorizontal/PhotoHorizontalScreen';
@@ -17,6 +18,7 @@ export const BaseScreen = () => {
           name="photoHorizontal"
           options={{
             title: '가로 리스트',
+            tabBarIcon: () => <Icon name="vertical-distribute" />,
           }}
           component={PhotoHorizontalScreen}
         />
@@ -24,6 +26,7 @@ export const BaseScreen = () => {
           name="photoVertical"
           options={{
             title: '세로 리스트',
+            tabBarIcon: () => <Icon name="horizontal-distribute" />,
           }}
           component={PhotoVerticalScreen}
         />

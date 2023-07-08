@@ -24,10 +24,14 @@ export default (state = initialState, action: AnyAction) => {
       return newState;
     }
     case `${GET_HORIZONTAL_PHOTO_LIST}_FULFILLED`: {
-      const {data} = action.payload;
+      const {data, _start} = action.payload;
       const newState = _.clone(state);
 
-      newState.list = [...newState.list, ...data];
+      if (_start === 0) {
+        newState.list = data.data;
+      } else {
+        newState.list = [...newState.list, ...data.data];
+      }
       newState._limit = newState._limit;
 
       newState.isLoading = false;
